@@ -6,88 +6,91 @@
 <title>CREADORA MALE</title>
 
 <style>
+/* BASE */
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
-    background:#f5f6ff;
-    overflow-x:hidden;
+    background:#eaf6ff; /* celeste pastel */
 }
 
 /* HEADER */
 .header{
     display:flex;
-    align-items:center;
     justify-content:center;
-    padding:40px 20px 20px;
+    padding:25px 15px;
 }
 
 .header h1{
     margin:0;
-    font-size:32px;
-    letter-spacing:2px;
+    font-size:26px;
+    letter-spacing:1.5px;
     background:linear-gradient(90deg,#9bbcff,#c7b3ff);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    font-weight:bold;
+    font-weight:700;
+    text-align:center;
 }
 
-/* SELECTOR MES */
+/* MES */
 .mes-container{
     display:flex;
     justify-content:center;
-    margin:20px 0;
+    margin:10px 0 20px;
 }
 
 .mes-container input{
-    width:220px;
+    width:200px;
     padding:8px;
-    border-radius:8px;
-    border:1px solid #c7b3ff;
+    border-radius:10px;
+    border:1px solid #b9caff;
     text-align:center;
     background:white;
-    font-weight:bold;
+    font-weight:600;
 }
 
-/* CALENDARIO */
+/* CALENDARIO MOBILE FIRST */
 .calendar{
     display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:10px;
-    padding:15px;
+    grid-template-columns:1fr; /* celular */
+    gap:12px;
+    padding:12px;
 }
 
+/* DIA */
 .day{
     background:white;
-    border-radius:15px;
-    padding:8px;
-    min-height:220px;
+    border-radius:16px;
+    padding:10px;
     box-shadow:0 4px 10px rgba(0,0,0,0.08);
-    font-size:12px;
+    font-size:13px;
 }
 
 .day-header{
-    font-weight:bold;
-    margin-bottom:5px;
+    font-weight:700;
+    margin-bottom:6px;
     color:#8fa8ff;
 }
 
+/* INPUTS */
 input{
     width:100%;
-    margin-bottom:4px;
-    padding:4px;
-    border-radius:6px;
+    margin-bottom:6px;
+    padding:6px;
+    border-radius:8px;
     border:1px solid #c7b3ff;
+    font-size:13px;
 }
 
+/* BOTONES */
 button{
     width:100%;
-    padding:4px;
+    padding:6px;
     border:none;
-    border-radius:6px;
-    font-size:12px;
-    font-weight:bold;
+    border-radius:8px;
+    font-size:13px;
+    font-weight:600;
     cursor:pointer;
-    margin-bottom:4px;
+    margin-bottom:6px;
 }
 
 .btn-add{
@@ -95,44 +98,55 @@ button{
     color:white;
 }
 
+/* ITEMS */
 .venta-item{
     background:#eef1ff;
-    padding:4px;
-    border-radius:6px;
-    margin-bottom:4px;
+    padding:6px;
+    border-radius:8px;
+    margin-bottom:6px;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    font-size:12px;
 }
 
 .btn-delete{
     background:#a88bff;
     color:white;
     border:none;
-    padding:2px 6px;
+    padding:2px 8px;
     border-radius:6px;
     cursor:pointer;
-    font-size:10px;
+    font-size:11px;
 }
 
 .total-dia{
-    font-weight:bold;
-    margin-top:4px;
+    font-weight:700;
+    margin-top:6px;
 }
 
+/* TOTAL MES */
 .total-mes{
-    margin:20px;
+    margin:15px;
     text-align:center;
-    font-size:20px;
-    font-weight:bold;
-    background:linear-gradient(90deg,#eef1ff,#f4ecff);
-    padding:15px;
-    border-radius:15px;
+    font-size:18px;
+    font-weight:700;
+    background:#dfe9ff;
+    padding:14px;
+    border-radius:16px;
 }
 
-@media(max-width:900px){
+/* TABLET */
+@media(min-width:600px){
     .calendar{
         grid-template-columns:repeat(2,1fr);
+    }
+}
+
+/* DESKTOP */
+@media(min-width:1024px){
+    .calendar{
+        grid-template-columns:repeat(7,1fr);
     }
 }
 </style>
@@ -184,29 +198,26 @@ function crearCalendario(){
 
         if(!datos[clave]) datos[clave]=[];
 
-        let totalDia=datos[clave].reduce((sum,v)=>sum+Number(v.importe),0);
+        let totalDia=datos[clave].reduce((s,v)=>s+Number(v.importe),0);
         totalMes+=totalDia;
 
         calendar.innerHTML+=`
         <div class="day">
             <div class="day-header">${nombreDia} ${dia}</div>
-
             <input type="text" id="nombre-${clave}" placeholder="Nombre cliente">
             <input type="number" id="importe-${clave}" placeholder="Importe">
             <button class="btn-add" onclick="agregarVenta('${clave}')">Agregar</button>
 
-            <div id="lista-${clave}">
+            <div>
                 ${datos[clave].map((v,i)=>`
-                    <div class="venta-item">
-                        ${v.nombre} - $${v.importe}
-                        <button class="btn-delete" onclick="borrarVenta('${clave}',${i})">X</button>
-                    </div>
-                `).join("")}
+                <div class="venta-item">
+                    ${v.nombre} - $${v.importe}
+                    <button class="btn-delete" onclick="borrarVenta('${clave}',${i})">X</button>
+                </div>`).join("")}
             </div>
 
             <div class="total-dia">Total Día: $${totalDia}</div>
-        </div>
-        `;
+        </div>`;
     }
 
     document.getElementById("totalMes").innerText=totalMes;
@@ -214,11 +225,10 @@ function crearCalendario(){
 }
 
 function agregarVenta(clave){
-    const nombre=document.getElementById("nombre-"+clave).value;
-    const importe=document.getElementById("importe-"+clave).value;
-    if(!nombre || !importe) return;
-
-    datos[clave].push({nombre,importe});
+    const n=document.getElementById("nombre-"+clave).value;
+    const i=document.getElementById("importe-"+clave).value;
+    if(!n||!i) return;
+    datos[clave].push({nombre:n,importe:i});
     crearCalendario();
 }
 
