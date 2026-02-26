@@ -10,14 +10,28 @@
 body{
     margin:0;
     font-family:'Segoe UI',sans-serif;
-    background:#eaf6ff; /* celeste pastel */
+    background:#eaf6ff;
 }
 
 /* HEADER */
 .header{
+    position:relative;
     display:flex;
     justify-content:center;
+    align-items:center;
     padding:25px 15px;
+}
+
+.logo{
+    position:absolute;
+    top:15px;
+    left:15px;
+    width:70px;
+    height:70px;
+    object-fit:cover;
+    border-radius:50%;
+    box-shadow:0 4px 10px rgba(0,0,0,0.15);
+    background:white;
 }
 
 .header h1{
@@ -48,10 +62,10 @@ body{
     font-weight:600;
 }
 
-/* CALENDARIO MOBILE FIRST */
+/* CALENDARIO - MOBILE FIRST */
 .calendar{
     display:grid;
-    grid-template-columns:1fr; /* celular */
+    grid-template-columns:1fr;
     gap:12px;
     padding:12px;
 }
@@ -154,6 +168,7 @@ button{
 <body>
 
 <div class="header">
+    <img src="02.14.00.jpeg" class="logo">
     <h1>CREADORA MALE</h1>
 </div>
 
@@ -164,7 +179,7 @@ button{
 <div class="calendar" id="calendar"></div>
 
 <div class="total-mes">
-Total del Mes: $ <span id="totalMes">0</span>
+    Total del Mes: $ <span id="totalMes">0</span>
 </div>
 
 <script>
@@ -204,6 +219,7 @@ function crearCalendario(){
         calendar.innerHTML+=`
         <div class="day">
             <div class="day-header">${nombreDia} ${dia}</div>
+
             <input type="text" id="nombre-${clave}" placeholder="Nombre cliente">
             <input type="number" id="importe-${clave}" placeholder="Importe">
             <button class="btn-add" onclick="agregarVenta('${clave}')">Agregar</button>
