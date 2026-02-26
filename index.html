@@ -19,15 +19,15 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:25px 15px;
+    padding:30px 15px;
 }
 
 .logo{
     position:absolute;
     top:15px;
     left:15px;
-    width:70px;
-    height:70px;
+    width:90px;      /* LOGO MÁS GRANDE */
+    height:90px;
     object-fit:cover;
     border-radius:50%;
     box-shadow:0 4px 10px rgba(0,0,0,0.15);
@@ -36,7 +36,7 @@ body{
 
 .header h1{
     margin:0;
-    margin-left:1cm; /* CORRIDO 1 CM A LA DERECHA */
+    margin-left:1cm; /* TITULO 1 CM A LA DERECHA */
     font-size:26px;
     letter-spacing:1.5px;
     background:linear-gradient(90deg,#9bbcff,#c7b3ff);
@@ -51,6 +51,7 @@ body{
     display:flex;
     justify-content:center;
     margin:10px 0 20px;
+    margin-left:1cm; /* MES 1 CM A LA DERECHA */
 }
 
 .mes-container input{
@@ -63,7 +64,7 @@ body{
     font-weight:600;
 }
 
-/* CALENDARIO - MOBILE FIRST */
+/* CALENDARIO */
 .calendar{
     display:grid;
     grid-template-columns:1fr;
@@ -71,7 +72,6 @@ body{
     padding:12px;
 }
 
-/* DIA */
 .day{
     background:white;
     border-radius:16px;
@@ -86,17 +86,14 @@ body{
     color:#8fa8ff;
 }
 
-/* INPUTS */
 input{
     width:100%;
     margin-bottom:6px;
     padding:6px;
     border-radius:8px;
     border:1px solid #c7b3ff;
-    font-size:13px;
 }
 
-/* BOTONES */
 button{
     width:100%;
     padding:6px;
@@ -113,7 +110,6 @@ button{
     color:white;
 }
 
-/* ITEMS */
 .venta-item{
     background:#eef1ff;
     padding:6px;
@@ -140,7 +136,6 @@ button{
     margin-top:6px;
 }
 
-/* TOTAL MES */
 .total-mes{
     margin:15px;
     text-align:center;
@@ -151,18 +146,12 @@ button{
     border-radius:16px;
 }
 
-/* TABLET */
+/* RESPONSIVE */
 @media(min-width:600px){
-    .calendar{
-        grid-template-columns:repeat(2,1fr);
-    }
+    .calendar{ grid-template-columns:repeat(2,1fr); }
 }
-
-/* DESKTOP */
 @media(min-width:1024px){
-    .calendar{
-        grid-template-columns:repeat(7,1fr);
-    }
+    .calendar{ grid-template-columns:repeat(7,1fr); }
 }
 </style>
 </head>
@@ -187,7 +176,6 @@ button{
 const calendar=document.getElementById("calendar");
 const mesSelector=document.getElementById("mesSelector");
 let datos=JSON.parse(localStorage.getItem("ventasEstrellitas"))||{};
-
 const diasNombre=["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"];
 
 function iniciar(){
@@ -195,7 +183,6 @@ function iniciar(){
     mesSelector.value=hoy.toISOString().slice(0,7);
     crearCalendario();
 }
-
 mesSelector.addEventListener("change",crearCalendario);
 
 function crearCalendario(){
@@ -211,7 +198,6 @@ function crearCalendario(){
         const fecha=new Date(year,month-1,dia);
         const clave=fecha.toISOString().split("T")[0];
         const nombreDia=diasNombre[fecha.getDay()];
-
         if(!datos[clave]) datos[clave]=[];
 
         let totalDia=datos[clave].reduce((s,v)=>s+Number(v.importe),0);
@@ -220,23 +206,17 @@ function crearCalendario(){
         calendar.innerHTML+=`
         <div class="day">
             <div class="day-header">${nombreDia} ${dia}</div>
-
             <input type="text" id="nombre-${clave}" placeholder="Nombre cliente">
             <input type="number" id="importe-${clave}" placeholder="Importe">
             <button class="btn-add" onclick="agregarVenta('${clave}')">Agregar</button>
-
-            <div>
-                ${datos[clave].map((v,i)=>`
-                <div class="venta-item">
-                    ${v.nombre} - $${v.importe}
-                    <button class="btn-delete" onclick="borrarVenta('${clave}',${i})">X</button>
-                </div>`).join("")}
-            </div>
-
+            ${datos[clave].map((v,i)=>`
+            <div class="venta-item">
+                ${v.nombre} - $${v.importe}
+                <button class="btn-delete" onclick="borrarVenta('${clave}',${i})">X</button>
+            </div>`).join("")}
             <div class="total-dia">Total Día: $${totalDia}</div>
         </div>`;
     }
-
     document.getElementById("totalMes").innerText=totalMes;
     localStorage.setItem("ventasEstrellitas",JSON.stringify(datos));
 }
@@ -248,12 +228,10 @@ function agregarVenta(clave){
     datos[clave].push({nombre:n,importe:i});
     crearCalendario();
 }
-
 function borrarVenta(clave,index){
     datos[clave].splice(index,1);
     crearCalendario();
 }
-
 iniciar();
 </script>
 
